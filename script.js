@@ -19,8 +19,8 @@ function generateRandomNumbers() {
         return;
     }
     
-    if (count < 1 || count > 100) {
-        alert('Inserisci una quantità tra 1 e 100!');
+    if (count < 1 || count > 10000) {
+        alert('Inserisci una quantità tra 1 e 10000!');
         return;
     }
     
