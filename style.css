@@ -1,191 +1,271 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2865
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-\f0\fs24 \cf0 * \{\
-    margin: 0;\
-    padding: 0;\
-    box-sizing: border-box;\
-\}\
-\
-body \{\
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
-    min-height: 100vh;\
-    display: flex;\
-    justify-content: center;\
-    align-items: center;\
-    padding: 20px;\
-\}\
-\
-.container \{\
-    background: white;\
-    border-radius: 20px;\
-    padding: 40px;\
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);\
-    max-width: 500px;\
-    width: 100%;\
-\}\
-\
-h1 \{\
-    text-align: center;\
-    color: #333;\
-    margin-bottom: 30px;\
-    font-size: 2em;\
-\}\
-\
-.settings \{\
-    display: flex;\
-    flex-direction: column;\
-    gap: 15px;\
-    margin-bottom: 25px;\
-\}\
-\
-.input-group \{\
-    display: flex;\
-    flex-direction: column;\
-    gap: 5px;\
-\}\
-\
-label \{\
-    color: #555;\
-    font-weight: 600;\
-    font-size: 0.9em;\
-\}\
-\
-input[type="number"] \{\
-    padding: 12px;\
-    border: 2px solid #e0e0e0;\
-    border-radius: 8px;\
-    font-size: 1em;\
-    transition: border-color 0.3s;\
-\}\
-\
-input[type="number"]:focus \{\
-    outline: none;\
-    border-color: #667eea;\
-\}\
-\
-.generate-btn \{\
-    width: 100%;\
-    padding: 15px;\
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
-    color: white;\
-    border: none;\
-    border-radius: 10px;\
-    font-size: 1.1em;\
-    font-weight: 600;\
-    cursor: pointer;\
-    transition: transform 0.2s, box-shadow 0.2s;\
-\}\
-\
-.generate-btn:hover \{\
-    transform: translateY(-2px);\
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);\
-\}\
-\
-.generate-btn:active \{\
-    transform: translateY(0);\
-\}\
-\
-.result \{\
-    margin: 25px 0;\
-    padding: 30px;\
-    background: #f8f9fa;\
-    border-radius: 10px;\
-    text-align: center;\
-    min-height: 100px;\
-    display: flex;\
-    align-items: center;\
-    justify-content: center;\
-\}\
-\
-.result p \{\
-    color: #666;\
-    font-size: 1.1em;\
-\}\
-\
-.numbers \{\
-    display: flex;\
-    flex-wrap: wrap;\
-    gap: 10px;\
-    justify-content: center;\
-\}\
-\
-.number \{\
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\
-    color: white;\
-    padding: 15px 25px;\
-    border-radius: 10px;\
-    font-size: 1.5em;\
-    font-weight: 700;\
-    animation: fadeIn 0.3s ease-in;\
-\}\
-\
-@keyframes fadeIn \{\
-    from \{\
-        opacity: 0;\
-        transform: scale(0.8);\
-    \}\
-    to \{\
-        opacity: 1;\
-        transform: scale(1);\
-    \}\
-\}\
-\
-.history \{\
-    margin-top: 30px;\
-    padding-top: 20px;\
-    border-top: 2px solid #e0e0e0;\
-\}\
-\
-.history h3 \{\
-    color: #333;\
-    margin-bottom: 15px;\
-    font-size: 1.2em;\
-\}\
-\
-#historyList \{\
-    max-height: 200px;\
-    overflow-y: auto;\
-    margin-bottom: 15px;\
-\}\
-\
-.history-item \{\
-    padding: 10px;\
-    background: #f8f9fa;\
-    margin-bottom: 8px;\
-    border-radius: 6px;\
-    color: #555;\
-    font-size: 0.9em;\
-\}\
-\
-.clear-btn \{\
-    width: 100%;\
-    padding: 10px;\
-    background: #dc3545;\
-    color: white;\
-    border: none;\
-    border-radius: 8px;\
-    cursor: pointer;\
-    font-weight: 600;\
-    transition: background 0.3s;\
-\}\
-\
-.clear-btn:hover \{\
-    background: #c82333;\
-\}\
-\
-@media (max-width: 600px) \{\
-    .container \{\
-        padding: 25px;\
-    \}\
-    \
-    h1 \{\
-        font-size: 1.5em;\
-    \}\
-\}\
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    color: #555;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+input[type="number"] {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Styling per checkbox numeri unici */
+.checkbox-group {
+    margin-top: 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.checkbox-label:hover {
+    background: #e9ecef;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.help-text {
+    display: block;
+    color: #666;
+    font-size: 0.8em;
+    font-weight: 400;
+    margin-top: 2px;
+}
+
+.generate-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.generate-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.generate-btn:active {
+    transform: translateY(0);
+}
+
+.result {
+    margin: 25px 0;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    text-align: center;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.result p {
+    color: #666;
+    font-size: 1.1em;
+}
+
+/* Badge per numeri unici */
+.unique-badge {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+}
+
+.numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+
+.number {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 1.5em;
+    font-weight: 700;
+    animation: fadeIn 0.3s ease-in;
+    position: relative;
+}
+
+/* Stile speciale per numeri unici */
+.number.unique {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.history {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.history h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+#historyList {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.history-item {
+    padding: 12px;
+    background: #f8f9fa;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.history-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Badge nella cronologia */
+.history-badge {
+    background: #28a745;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7em;
+    font-weight: 600;
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.clear-btn {
+    width: 100%;
+    padding: 10px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.clear-btn:hover {
+    background: #c82333;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .checkbox-label {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+    
+    .number {
+        padding: 12px 20px;
+        font-size: 1.3em;
+    }
 }
