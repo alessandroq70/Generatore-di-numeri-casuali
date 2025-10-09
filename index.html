@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Numeri Casuali</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Generatore Numeri Casuali</h1>
+        
+        <div class="settings">
+            <div class="input-group">
+                <label for="min">Numero Minimo:</label>
+                <input type="number" id="min" value="1">
+            </div>
+            
+            <div class="input-group">
+                <label for="max">Numero Massimo:</label>
+                <input type="number" id="max" value="100">
+            </div>
+            
+            <div class="input-group">
+                <label for="count">Quantità:</label>
+                <input type="number" id="count" value="1" min="1">
+            </div>
+        </div>
+        
+        <button id="generateBtn" class="generate-btn">Genera Numero</button>
+        
+        <div class="result" id="result">
+            <p>Premi il pulsante per generare</p>
+        </div>
+        
+        <div class="history">
+            <h3>Cronologia</h3>
+            <div id="historyList"></div>
+            <button id="clearBtn" class="clear-btn">Cancella Cronologia</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
