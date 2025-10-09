@@ -16,6 +16,12 @@ function generateRandomNumbers() {
     const count = parseInt(countInput.value);
     const unique = uniqueCheckbox.checked;
     
+    // Validazione input
+    if (isNaN(min) || isNaN(max) || isNaN(count)) {
+        alert('Inserisci valori numerici validi!');
+        return;
+    }
+    
     if (min >= max) {
         alert('Il numero minimo deve essere inferiore al massimo!');
         return;
@@ -36,55 +42,85 @@ function generateRandomNumbers() {
     let numbers = [];
     
     if (unique) {
-        // Genera numeri senza ripetizioni
+        // ALGORITMO GARANTITO per numeri senza ripetizioni
         numbers = generateUniqueNumbers(min, max, count);
+        
+        // Verifica finale per sicurezza
+        const uniqueCheck = new Set(numbers);
+        if (uniqueCheck.size !== numbers.length) {
+            console.error('ERRORE: Numeri duplicati rilevati!', numbers);
+            // Ripeti la generazione come fallback
+            numbers = generateUniqueNumbersSecure(min, max, count);
+        }
+        
+        // Ordina i numeri per lotterie
+        numbers.sort((a, b) => a - b);
     } else {
-        // Genera numeri con possibili ripetizioni (comportamento originale)
+        // Genera numeri con possibili ripetizioni
         for (let i = 0; i < count; i++) {
             const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
             numbers.push(randomNum);
         }
     }
     
-    // Ordina i numeri se sono unici (utile per lotterie)
-    if (unique && numbers.length > 1) {
-        numbers.sort((a, b) => a - b);
-    }
-    
     displayNumbers(numbers, unique);
     addToHistory(numbers, min, max, unique);
 }
 
-// Genera numeri unici senza ripetizioni
+// METODO PRIMARIO: Genera numeri unici senza ripetizioni
 function generateUniqueNumbers(min, max, count) {
     const numbers = [];
-    const availableNumbers = [];
+    const used = new Set(); // Usa Set per tracking più veloce
     
-    // Crea array con tutti i numeri possibili
-    for (let i = min; i <= max; i++) {
-        availableNumbers.push(i);
-    }
-    
-    // Fisher-Yates shuffle per selezione casuale efficiente
-    for (let i = 0; i < count; i++) {
-        const randomIndex = Math.floor(Math.random() * availableNumbers.length);
-        numbers.push(availableNumbers[randomIndex]);
-        availableNumbers.splice(randomIndex, 1);
+    while (numbers.length < count) {
+        const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+        
+        if (!used.has(randomNum)) {
+            numbers.push(randomNum);
+            used.add(randomNum);
+        }
     }
     
     return numbers;
 }
 
+// METODO SICURO: Algoritmo alternativo garantito
+function generateUniqueNumbersSecure(min, max, count) {
+    console.log('Usando algoritmo sicuro di fallback');
+    
+    // Crea array con tutti i numeri possibili
+    const availableNumbers = [];
+    for (let i = min; i <= max; i++) {
+        availableNumbers.push(i);
+    }
+    
+    // Mescola l'array usando Fisher-Yates
+    for (let i = availableNumbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [availableNumbers[i], availableNumbers[j]] = [availableNumbers[j], availableNumbers[i]];
+    }
+    
+    // Prendi i primi 'count' elementi
+    return availableNumbers.slice(0, count);
+}
+
 // Visualizza numeri generati
 function displayNumbers(numbers, isUnique) {
+    // Debug per verificare unicità
+    if (isUnique) {
+        const uniqueCheck = new Set(numbers);
+        console.log(`Numeri generati: ${numbers.length}, Numeri unici: ${uniqueCheck.size}`);
+        console.log('Numeri:', numbers.join(', '));
+    }
+    
     resultDiv.innerHTML = '<div class="numbers"></div>';
     const numbersContainer = resultDiv.querySelector('.numbers');
     
     // Aggiungi badge se i numeri sono unici
-    if (isUnique && numbers.length > 1) {
+    if (isUnique) {
         const badge = document.createElement('div');
         badge.className = 'unique-badge';
-        badge.innerHTML = '✨ Numeri Unici';
+        badge.innerHTML = '✨ Numeri Unici (Nessun Duplicato)';
         resultDiv.insertBefore(badge, numbersContainer);
     }
     
@@ -103,11 +139,20 @@ function displayNumbers(numbers, isUnique) {
 // Aggiungi alla cronologia
 function addToHistory(numbers, min, max, isUnique) {
     const timestamp = new Date().toLocaleString('it-IT');
+    
+    // Verifica finale unicità per cronologia
+    let actuallyUnique = isUnique;
+    if (isUnique) {
+        const uniqueCheck = new Set(numbers);
+        actuallyUnique = uniqueCheck.size === numbers.length;
+    }
+    
     const historyItem = {
         numbers: numbers,
         range: `${min}-${max}`,
         time: timestamp,
-        unique: isUnique
+        unique: actuallyUnique,
+        count: numbers.length
     };
     
     history.unshift(historyItem);
@@ -120,15 +165,24 @@ function addToHistory(numbers, min, max, isUnique) {
 function updateHistoryDisplay() {
     historyList.innerHTML = '';
     
-    history.forEach(item => {
+    history.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'history-item';
         
-        const uniqueBadge = item.unique ? '<span class="history-badge">UNICI</span>' : '';
+        let badges = '';
+        if (item.unique) {
+            badges += '<span class="history-badge unique-badge-small">UNICI</span>';
+        }
+        if (item.count > 1) {
+            badges += `<span class="history-badge count-badge">${item.count}x</span>`;
+        }
+        
         itemDiv.innerHTML = `
             <div class="history-content">
-                <strong>${item.numbers.join(', ')}</strong> ${uniqueBadge}<br>
-                <small>Range: ${item.range} | ${item.time}</small>
+                <div class="history-numbers">
+                    <strong>${item.numbers.join(', ')}</strong> ${badges}
+                </div>
+                <small class="history-details">Range: ${item.range} | ${item.time}</small>
             </div>
         `;
         historyList.appendChild(itemDiv);
@@ -147,7 +201,7 @@ function updateButtonText() {
     const isUnique = uniqueCheckbox.checked;
     
     if (count === 1) {
-        generateBtn.textContent = 'Genera Numero';
+        generateBtn.textContent = isUnique ? 'Genera 1 Numero Unico' : 'Genera Numero';
     } else {
         if (isUnique) {
             generateBtn.textContent = `Genera ${count} Numeri Unici`;
@@ -169,6 +223,9 @@ document.addEventListener('keypress', (e) => {
         generateRandomNumbers();
     }
 });
+
+// Test della console per debugging
+console.log('Generatore numeri casuali caricato - versione con debug');
 
 // Inizializza il testo del pulsante
 updateButtonText();
