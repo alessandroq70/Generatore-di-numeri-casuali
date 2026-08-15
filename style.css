@@ -308,19 +308,6 @@ input[type="checkbox"] {
 }
 
 /* Sezione Battaglia Risiko */
-.risiko-section {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.risiko-section h3 {
-    color: #333;
-    margin-bottom: 15px;
-    font-size: 1.2em;
-    text-align: center;
-}
-
 .risiko-settings {
     display: flex;
     gap: 15px;
@@ -409,10 +396,29 @@ input[type="checkbox"] {
     background: linear-gradient(135deg, #2980b9 0%, #2c3e50 100%);
 }
 
-.round-outcome {
+.round-outcome-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.round-outcome-list li {
     font-weight: 600;
     color: #333;
-    margin-bottom: 10px;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.round-outcome-list .attacker-loss {
+    border-left: 4px solid #e74c3c;
+}
+
+.round-outcome-list .defender-loss {
+    border-left: 4px solid #2980b9;
 }
 
 .armies-status {
@@ -426,6 +432,81 @@ input[type="checkbox"] {
     margin-top: 10px;
     font-weight: 700;
     color: #16a085;
+}
+
+/* Link per tornare al menu */
+.back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    color: #667eea;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95em;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* Menu iniziale */
+.menu-container {
+    text-align: center;
+}
+
+.menu-subtitle {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 1.05em;
+}
+
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-btn:hover {
+    transform: translateY(-3px);
+}
+
+.menu-btn-numbers {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.menu-btn-numbers:hover {
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.45);
+}
+
+.menu-btn-risiko {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.menu-btn-risiko:hover {
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.45);
+}
+
+.menu-icon {
+    font-size: 1.8em;
+}
+
+.menu-label {
+    flex: 1;
+    text-align: left;
 }
 
 @media (max-width: 600px) {

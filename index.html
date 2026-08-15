@@ -3,74 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generatore Numeri Casuali</title>
+    <title>Centro Giochi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🎲 Generatore Numeri Casuali 🎲</h1>
-        
-        <div class="settings">
-            <div class="input-group">
-                <label for="min">Numero Minimo:</label>
-                <input type="number" id="min" value="1">
-            </div>
-            
-            <div class="input-group">
-                <label for="max">Numero Massimo:</label>
-                <input type="number" id="max" value="90">
-            </div>
-            
-            <div class="input-group">
-                <label for="count">Quanti numeri:</label>
-                <input type="number" id="count" value="1" min="1">
-            </div>
-            
-            <div class="input-group checkbox-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="uniqueNumbers">
-                    <span class="checkmark"></span>
-                    ✨ Numeri senza ripetizioni
-                    <small class="help-text">Utile per interrogazioni, lotterie ed estrazioni</small>
-                </label>
-            </div>
-        </div>
-        
-        <button id="generateBtn" class="generate-btn">Genera Numero</button>
-        
-        <div class="result" id="result">
-            <p>Premi il pulsante per generare</p>
-        </div>
-        
-        <div class="history">
-            <h3>Cronologia</h3>
-            <div id="historyList"></div>
-            <button id="clearBtn" class="clear-btn">Cancella Cronologia</button>
-        </div>
+    <div class="container menu-container">
+        <h1>🎲 Centro Giochi ⚔️</h1>
+        <p class="menu-subtitle">Scegli una funzione</p>
 
-        <div class="risiko-section">
-            <h3>⚔️ Battaglia Risiko</h3>
-            <div class="risiko-settings">
-                <div class="input-group">
-                    <label for="attackerArmies">Armate Attaccante:</label>
-                    <input type="number" id="attackerArmies" value="5" min="2">
-                </div>
-                <div class="input-group">
-                    <label for="defenderArmies">Armate Difensore:</label>
-                    <input type="number" id="defenderArmies" value="3" min="1">
-                </div>
-            </div>
-
-            <button id="rollBattleBtn" class="battle-btn">🎲 Tira i Dadi</button>
-
-            <div class="battle-result" id="battleResult">
-                <p>Imposta le armate e inizia la battaglia</p>
-            </div>
-
-            <button id="resetBattleBtn" class="clear-btn">Nuova Battaglia</button>
+        <div class="menu-options">
+            <a href="generatore.html" class="menu-btn menu-btn-numbers">
+                <span class="menu-icon">🔢</span>
+                <span class="menu-label">Generatore Numeri Casuali</span>
+            </a>
+            <a href="risiko.html" class="menu-btn menu-btn-risiko">
+                <span class="menu-icon">⚔️</span>
+                <span class="menu-label">Battaglia Risiko</span>
+            </a>
         </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>

@@ -15,36 +15,36 @@ function generateRandomNumbers() {
     const max = parseInt(maxInput.value);
     const count = parseInt(countInput.value);
     const unique = uniqueCheckbox.checked;
-    
+
     // Validazione input
     if (isNaN(min) || isNaN(max) || isNaN(count)) {
         alert('Inserisci valori numerici validi!');
         return;
     }
-    
+
     if (min >= max) {
         alert('Il numero minimo deve essere inferiore al massimo!');
         return;
     }
-    
+
     if (count < 1 || count > 1000) {
         alert('Inserisci una quantità tra 1 e 1000!');
         return;
     }
-    
+
     // Controllo per numeri unici
     const availableNumbers = max - min + 1;
     if (unique && count > availableNumbers) {
         alert(`Impossibile generare ${count} numeri unici nel range ${min}-${max}!\nMassimo possibile: ${availableNumbers}`);
         return;
     }
-    
+
     let numbers = [];
-    
+
     if (unique) {
         // ALGORITMO GARANTITO per numeri senza ripetizioni
         numbers = generateUniqueNumbers(min, max, count);
-        
+
         // Verifica finale per sicurezza
         const uniqueCheck = new Set(numbers);
         if (uniqueCheck.size !== numbers.length) {
@@ -52,7 +52,7 @@ function generateRandomNumbers() {
             // Ripeti la generazione come fallback
             numbers = generateUniqueNumbersSecure(min, max, count);
         }
-        
+
         // Ordina i numeri per lotterie
         numbers.sort((a, b) => a - b);
     } else {
@@ -62,7 +62,7 @@ function generateRandomNumbers() {
             numbers.push(randomNum);
         }
     }
-    
+
     displayNumbers(numbers, unique);
     addToHistory(numbers, min, max, unique);
 }
@@ -71,35 +71,35 @@ function generateRandomNumbers() {
 function generateUniqueNumbers(min, max, count) {
     const numbers = [];
     const used = new Set(); // Usa Set per tracking più veloce
-    
+
     while (numbers.length < count) {
         const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-        
+
         if (!used.has(randomNum)) {
             numbers.push(randomNum);
             used.add(randomNum);
         }
     }
-    
+
     return numbers;
 }
 
 // METODO SICURO: Algoritmo alternativo garantito
 function generateUniqueNumbersSecure(min, max, count) {
     console.log('Usando algoritmo sicuro di fallback');
-    
+
     // Crea array con tutti i numeri possibili
     const availableNumbers = [];
     for (let i = min; i <= max; i++) {
         availableNumbers.push(i);
     }
-    
+
     // Mescola l'array usando Fisher-Yates
     for (let i = availableNumbers.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [availableNumbers[i], availableNumbers[j]] = [availableNumbers[j], availableNumbers[i]];
     }
-    
+
     // Prendi i primi 'count' elementi
     return availableNumbers.slice(0, count);
 }
@@ -112,10 +112,10 @@ function displayNumbers(numbers, isUnique) {
         console.log(`Numeri generati: ${numbers.length}, Numeri unici: ${uniqueCheck.size}`);
         console.log('Numeri:', numbers.join(', '));
     }
-    
+
     resultDiv.innerHTML = '<div class="numbers"></div>';
     const numbersContainer = resultDiv.querySelector('.numbers');
-    
+
     // Aggiungi badge se i numeri sono unici
     if (isUnique) {
         const badge = document.createElement('div');
@@ -123,13 +123,13 @@ function displayNumbers(numbers, isUnique) {
         badge.innerHTML = '✨ Numeri Unici (Nessun Duplicato)';
         resultDiv.insertBefore(badge, numbersContainer);
     }
-    
+
     numbers.forEach((num, index) => {
         const numberDiv = document.createElement('div');
         numberDiv.className = 'number';
         if (isUnique) numberDiv.classList.add('unique');
         numberDiv.textContent = num;
-        
+
         // Animazione con delay per effetto cascata
         numberDiv.style.animationDelay = `${index * 0.1}s`;
         numbersContainer.appendChild(numberDiv);
@@ -139,14 +139,14 @@ function displayNumbers(numbers, isUnique) {
 // Aggiungi alla cronologia
 function addToHistory(numbers, min, max, isUnique) {
     const timestamp = new Date().toLocaleString('it-IT');
-    
+
     // Verifica finale unicità per cronologia
     let actuallyUnique = isUnique;
     if (isUnique) {
         const uniqueCheck = new Set(numbers);
         actuallyUnique = uniqueCheck.size === numbers.length;
     }
-    
+
     const historyItem = {
         numbers: numbers,
         range: `${min}-${max}`,
@@ -154,21 +154,21 @@ function addToHistory(numbers, min, max, isUnique) {
         unique: actuallyUnique,
         count: numbers.length
     };
-    
+
     history.unshift(historyItem);
     if (history.length > 10) history.pop();
-    
+
     updateHistoryDisplay();
 }
 
 // Aggiorna visualizzazione cronologia
 function updateHistoryDisplay() {
     historyList.innerHTML = '';
-    
+
     history.forEach((item, index) => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'history-item';
-        
+
         let badges = '';
         if (item.unique) {
             badges += '<span class="history-badge unique-badge-small">UNICI</span>';
@@ -176,7 +176,7 @@ function updateHistoryDisplay() {
         if (item.count > 1) {
             badges += `<span class="history-badge count-badge">${item.count}x</span>`;
         }
-        
+
         itemDiv.innerHTML = `
             <div class="history-content">
                 <div class="history-numbers">
@@ -199,7 +199,7 @@ function clearHistory() {
 function updateButtonText() {
     const count = parseInt(countInput.value) || 1;
     const isUnique = uniqueCheckbox.checked;
-    
+
     if (count === 1) {
         generateBtn.textContent = isUnique ? 'Genera 1 Numero Unico' : 'Genera Numero';
     } else {
@@ -224,135 +224,5 @@ document.addEventListener('keypress', (e) => {
     }
 });
 
-// Test della console per debugging
-console.log('Generatore numeri casuali caricato - versione con debug');
-
 // Inizializza il testo del pulsante
 updateButtonText();
-
-// ===== Battaglia Risiko =====
-const attackerArmiesInput = document.getElementById('attackerArmies');
-const defenderArmiesInput = document.getElementById('defenderArmies');
-const rollBattleBtn = document.getElementById('rollBattleBtn');
-const resetBattleBtn = document.getElementById('resetBattleBtn');
-const battleResult = document.getElementById('battleResult');
-
-let battle = null;
-
-// Lancia n dadi a 6 facce, ordinati dal più alto al più basso
-function rollDice(n) {
-    const dice = [];
-    for (let i = 0; i < n; i++) {
-        dice.push(Math.floor(Math.random() * 6) + 1);
-    }
-    return dice.sort((a, b) => b - a);
-}
-
-function initBattle() {
-    const attacker = parseInt(attackerArmiesInput.value);
-    const defender = parseInt(defenderArmiesInput.value);
-
-    if (isNaN(attacker) || isNaN(defender)) {
-        alert('Inserisci valori numerici validi!');
-        return null;
-    }
-
-    if (attacker < 2) {
-        alert("L'attaccante deve avere almeno 2 armate (ne serve sempre 1 di riserva)!");
-        return null;
-    }
-
-    if (defender < 1) {
-        alert('Il difensore deve avere almeno 1 armata!');
-        return null;
-    }
-
-    attackerArmiesInput.disabled = true;
-    defenderArmiesInput.disabled = true;
-
-    return { attacker, defender, over: false };
-}
-
-function playBattleRound() {
-    if (!battle) {
-        battle = initBattle();
-        if (!battle) return;
-    }
-
-    // Regole Risiko (variante casa): attaccante fino a 3 dadi (max armate-1), difensore fino a 3 dadi (max armate)
-    const attackDiceCount = Math.min(3, battle.attacker - 1);
-    const defenseDiceCount = Math.min(3, battle.defender);
-
-    const attackDice = rollDice(attackDiceCount);
-    const defenseDice = rollDice(defenseDiceCount);
-
-    const comparisons = Math.min(attackDice.length, defenseDice.length);
-    let attackerLosses = 0;
-    let defenderLosses = 0;
-
-    for (let i = 0; i < comparisons; i++) {
-        // In caso di parità vince il difensore
-        if (attackDice[i] > defenseDice[i]) {
-            defenderLosses++;
-        } else {
-            attackerLosses++;
-        }
-    }
-
-    battle.attacker -= attackerLosses;
-    battle.defender -= defenderLosses;
-
-    let finalMessage = null;
-    if (battle.defender <= 0) {
-        battle.over = true;
-        finalMessage = '🏆 Il difensore è stato sconfitto! Territorio conquistato!';
-    } else if (battle.attacker < 2) {
-        battle.over = true;
-        finalMessage = "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!";
-    }
-
-    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage);
-    updateBattleButton();
-}
-
-function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage) {
-    battleResult.innerHTML = `
-        <div class="dice-row">
-            <div class="dice-group">
-                <strong>⚔️ Attaccante</strong>
-                <div class="dice">${attackDice.map(d => `<span class="die attack-die">${d}</span>`).join('')}</div>
-            </div>
-            <div class="dice-group">
-                <strong>🛡️ Difensore</strong>
-                <div class="dice">${defenseDice.map(d => `<span class="die defense-die">${d}</span>`).join('')}</div>
-            </div>
-        </div>
-        <p class="round-outcome">Attaccante perde ${attackerLosses} armate, Difensore perde ${defenderLosses} armate</p>
-        <div class="armies-status">
-            <span>⚔️ Attaccante: <strong>${Math.max(battle.attacker, 0)}</strong></span>
-            <span>🛡️ Difensore: <strong>${Math.max(battle.defender, 0)}</strong></span>
-        </div>
-        ${finalMessage ? `<p class="battle-final-message">${finalMessage}</p>` : ''}
-    `;
-}
-
-function updateBattleButton() {
-    if (battle && battle.over) {
-        rollBattleBtn.textContent = 'Battaglia Terminata';
-        rollBattleBtn.disabled = true;
-    } else {
-        rollBattleBtn.textContent = '🎲 Tira i Dadi';
-        rollBattleBtn.disabled = false;
-    }
-}
-
-function resetBattle() {
-    battle = null;
-    attackerArmiesInput.disabled = false;
-    defenderArmiesInput.disabled = false;
-    battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
-    updateBattleButton();
-}
-
-rollBattleBtn.addEventListener('click', playBattleRound);
-resetBattleBtn.addEventListener('click', resetBattle);

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battaglia Risiko</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Menu</a>
+        <h1>⚔️ Battaglia Risiko ⚔️</h1>
+
+        <div class="risiko-settings">
+            <div class="input-group">
+                <label for="attackerArmies">Armate Attaccante:</label>
+                <input type="number" id="attackerArmies" value="5" min="2">
+            </div>
+            <div class="input-group">
+                <label for="defenderArmies">Armate Difensore:</label>
+                <input type="number" id="defenderArmies" value="3" min="1">
+            </div>
+        </div>
+
+        <button id="rollBattleBtn" class="battle-btn">🎲 Tira i Dadi</button>
+
+        <div class="battle-result" id="battleResult">
+            <p>Imposta le armate e inizia la battaglia</p>
+        </div>
+
+        <button id="resetBattleBtn" class="clear-btn">Nuova Battaglia</button>
+    </div>
+
+    <script src="risiko.js"></script>
+</body>
+</html>
