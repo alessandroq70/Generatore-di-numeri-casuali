@@ -512,6 +512,7 @@ input[type="checkbox"] {
     border-radius: 14px;
     text-align: center;
     color: white;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     animation: bounceIn 0.5s ease-out;
 }
 
