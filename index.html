@@ -47,8 +47,30 @@
             <div id="historyList"></div>
             <button id="clearBtn" class="clear-btn">Cancella Cronologia</button>
         </div>
+
+        <div class="risiko-section">
+            <h3>⚔️ Battaglia Risiko</h3>
+            <div class="risiko-settings">
+                <div class="input-group">
+                    <label for="attackerArmies">Armate Attaccante:</label>
+                    <input type="number" id="attackerArmies" value="5" min="2">
+                </div>
+                <div class="input-group">
+                    <label for="defenderArmies">Armate Difensore:</label>
+                    <input type="number" id="defenderArmies" value="3" min="1">
+                </div>
+            </div>
+
+            <button id="rollBattleBtn" class="battle-btn">🎲 Tira i Dadi</button>
+
+            <div class="battle-result" id="battleResult">
+                <p>Imposta le armate e inizia la battaglia</p>
+            </div>
+
+            <button id="resetBattleBtn" class="clear-btn">Nuova Battaglia</button>
+        </div>
     </div>
-    
+
     <script src="script.js"></script>
 </body>
 </html>
