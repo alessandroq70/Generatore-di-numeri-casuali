@@ -14,6 +14,12 @@ body {
     padding: 20px;
 }
 
+/* Pagine con contenuto piu' lungo: parte dall'alto invece di centrare,
+   cosi' su schermi piccoli non "sborda" in modo simmetrico sopra e sotto */
+body.align-top {
+    align-items: flex-start;
+}
+
 .container {
     background: white;
     border-radius: 20px;
@@ -311,15 +317,15 @@ input[type="checkbox"] {
 .risiko-settings {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-bottom: 15px;
+    gap: 14px;
+    margin-bottom: 12px;
 }
 
 .army-stepper {
     display: flex;
     align-items: stretch;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .army-display {
@@ -342,20 +348,21 @@ input[type="checkbox"] {
 
 .quick-select {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    flex-wrap: nowrap;
+    gap: 4px;
     margin-bottom: 8px;
 }
 
 .quick-btn {
-    flex: 1 0 auto;
-    min-width: 34px;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 8px 0;
     border: none;
     border-radius: 8px;
     background: #eef0f5;
     color: #333;
     font-weight: 600;
+    font-size: 0.95em;
     cursor: pointer;
     transition: background 0.2s, transform 0.15s;
 }
@@ -626,12 +633,13 @@ input[type="checkbox"] {
 
 @media (max-width: 600px) {
     .container {
-        padding: 25px;
+        padding: 20px;
         margin: 10px;
     }
 
     h1 {
-        font-size: 1.6em;
+        font-size: 1.5em;
+        margin-bottom: 18px;
     }
 
     .checkbox-label {
