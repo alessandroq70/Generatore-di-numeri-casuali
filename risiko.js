@@ -69,7 +69,7 @@ function initBattle() {
     defenderArmiesInput.disabled = true;
     setArmySelectorsEnabled(false);
 
-    return { attacker, defender, over: false };
+    return { attacker, defender };
 }
 
 function playBattleRound() {
@@ -102,16 +102,30 @@ function playBattleRound() {
     battle.defender -= defenderLosses;
 
     let finalMessage = null;
+    let battleEnded = false;
     if (battle.defender <= 0) {
-        battle.over = true;
         finalMessage = '🏆 Il difensore è stato sconfitto! Territorio conquistato!';
+        battleEnded = true;
     } else if (battle.attacker < 2) {
-        battle.over = true;
         finalMessage = "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!";
+        battleEnded = true;
     }
 
     displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage);
-    updateBattleButton();
+
+    if (battleEnded) {
+        endBattle();
+    }
+}
+
+// Aggiorna le armate rimaste sui campi di input per preparare l'attacco successivo
+function endBattle() {
+    attackerArmiesInput.value = Math.max(battle.attacker, 0);
+    defenderArmiesInput.value = Math.max(battle.defender, 0);
+    attackerArmiesInput.disabled = false;
+    defenderArmiesInput.disabled = false;
+    setArmySelectorsEnabled(true);
+    battle = null;
 }
 
 function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage) {
@@ -138,23 +152,12 @@ function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLos
     `;
 }
 
-function updateBattleButton() {
-    if (battle && battle.over) {
-        rollBattleBtn.textContent = 'Battaglia Terminata';
-        rollBattleBtn.disabled = true;
-    } else {
-        rollBattleBtn.textContent = '🎲 Tira i Dadi';
-        rollBattleBtn.disabled = false;
-    }
-}
-
 function resetBattle() {
     battle = null;
     attackerArmiesInput.disabled = false;
     defenderArmiesInput.disabled = false;
     setArmySelectorsEnabled(true);
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
-    updateBattleButton();
 }
 
 rollBattleBtn.addEventListener('click', playBattleRound);
