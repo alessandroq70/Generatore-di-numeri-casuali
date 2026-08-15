@@ -86,16 +86,19 @@ function playBattleRound() {
     defenderArmiesInput.value = defenderRemaining;
 
     let finalMessage = null;
+    let finalType = null;
     if (defenderRemaining <= 0) {
         finalMessage = '🏆 Il difensore è stato sconfitto! Territorio conquistato!';
+        finalType = 'victory';
     } else if (attackerRemaining < 2) {
         finalMessage = "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!";
+        finalType = 'halt';
     }
 
-    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage);
+    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType);
 }
 
-function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage) {
+function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType) {
     battleResult.innerHTML = `
         <div class="dice-row">
             <div class="dice-group">
@@ -115,7 +118,7 @@ function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLos
             <span>⚔️ Attaccante: <strong>${attackerRemaining}</strong></span>
             <span>🛡️ Difensore: <strong>${defenderRemaining}</strong></span>
         </div>
-        ${finalMessage ? `<p class="battle-final-message">${finalMessage}</p>` : ''}
+        ${finalMessage ? `<p class="battle-final-message ${finalType}">${finalMessage}</p>` : ''}
     `;
 }
 
