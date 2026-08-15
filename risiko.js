@@ -4,8 +4,6 @@ const rollBattleBtn = document.getElementById('rollBattleBtn');
 const resetBattleBtn = document.getElementById('resetBattleBtn');
 const battleResult = document.getElementById('battleResult');
 
-let battle = null;
-
 // Selezione rapida delle armate tramite bottoni 1-10 e +1/-1
 function setupArmySelector(inputId) {
     const input = document.getElementById(inputId);
@@ -31,12 +29,6 @@ function setupArmySelector(inputId) {
 setupArmySelector('attackerArmies');
 setupArmySelector('defenderArmies');
 
-function setArmySelectorsEnabled(enabled) {
-    document.querySelectorAll('.quick-btn, .adjust-btn').forEach(btn => {
-        btn.disabled = !enabled;
-    });
-}
-
 // Lancia n dadi a 6 facce, ordinati dal più alto al più basso
 function rollDice(n) {
     const dice = [];
@@ -46,41 +38,28 @@ function rollDice(n) {
     return dice.sort((a, b) => b - a);
 }
 
-function initBattle() {
-    const attacker = parseInt(attackerArmiesInput.value);
-    const defender = parseInt(defenderArmiesInput.value);
+function playBattleRound() {
+    const attacker = parseInt(attackerArmiesInput.value, 10);
+    const defender = parseInt(defenderArmiesInput.value, 10);
 
     if (isNaN(attacker) || isNaN(defender)) {
         alert('Inserisci valori numerici validi!');
-        return null;
+        return;
     }
 
     if (attacker < 2) {
         alert("L'attaccante deve avere almeno 2 armate (ne serve sempre 1 di riserva)!");
-        return null;
+        return;
     }
 
     if (defender < 1) {
         alert('Il difensore deve avere almeno 1 armata!');
-        return null;
-    }
-
-    attackerArmiesInput.disabled = true;
-    defenderArmiesInput.disabled = true;
-    setArmySelectorsEnabled(false);
-
-    return { attacker, defender };
-}
-
-function playBattleRound() {
-    if (!battle) {
-        battle = initBattle();
-        if (!battle) return;
+        return;
     }
 
     // Regole Risiko (variante casa): attaccante fino a 3 dadi (max armate-1), difensore fino a 3 dadi (max armate)
-    const attackDiceCount = Math.min(3, battle.attacker - 1);
-    const defenseDiceCount = Math.min(3, battle.defender);
+    const attackDiceCount = Math.min(3, attacker - 1);
+    const defenseDiceCount = Math.min(3, defender);
 
     const attackDice = rollDice(attackDiceCount);
     const defenseDice = rollDice(defenseDiceCount);
@@ -98,37 +77,25 @@ function playBattleRound() {
         }
     }
 
-    battle.attacker -= attackerLosses;
-    battle.defender -= defenderLosses;
+    const attackerRemaining = Math.max(attacker - attackerLosses, 0);
+    const defenderRemaining = Math.max(defender - defenderLosses, 0);
+
+    // Aggiorna subito i campi con le armate rimaste, cosi' restano modificabili
+    // (es. il difensore puo' decidere di difendere con meno armate al round successivo)
+    attackerArmiesInput.value = attackerRemaining;
+    defenderArmiesInput.value = defenderRemaining;
 
     let finalMessage = null;
-    let battleEnded = false;
-    if (battle.defender <= 0) {
+    if (defenderRemaining <= 0) {
         finalMessage = '🏆 Il difensore è stato sconfitto! Territorio conquistato!';
-        battleEnded = true;
-    } else if (battle.attacker < 2) {
+    } else if (attackerRemaining < 2) {
         finalMessage = "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!";
-        battleEnded = true;
     }
 
-    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage);
-
-    if (battleEnded) {
-        endBattle();
-    }
+    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage);
 }
 
-// Aggiorna le armate rimaste sui campi di input per preparare l'attacco successivo
-function endBattle() {
-    attackerArmiesInput.value = Math.max(battle.attacker, 0);
-    defenderArmiesInput.value = Math.max(battle.defender, 0);
-    attackerArmiesInput.disabled = false;
-    defenderArmiesInput.disabled = false;
-    setArmySelectorsEnabled(true);
-    battle = null;
-}
-
-function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, finalMessage) {
+function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage) {
     battleResult.innerHTML = `
         <div class="dice-row">
             <div class="dice-group">
@@ -145,18 +112,16 @@ function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLos
             <li class="defender-loss">🛡️ Difensore perde <strong>${defenderLosses}</strong> armat${defenderLosses === 1 ? 'a' : 'e'}</li>
         </ul>
         <div class="armies-status">
-            <span>⚔️ Attaccante: <strong>${Math.max(battle.attacker, 0)}</strong></span>
-            <span>🛡️ Difensore: <strong>${Math.max(battle.defender, 0)}</strong></span>
+            <span>⚔️ Attaccante: <strong>${attackerRemaining}</strong></span>
+            <span>🛡️ Difensore: <strong>${defenderRemaining}</strong></span>
         </div>
         ${finalMessage ? `<p class="battle-final-message">${finalMessage}</p>` : ''}
     `;
 }
 
 function resetBattle() {
-    battle = null;
-    attackerArmiesInput.disabled = false;
-    defenderArmiesInput.disabled = false;
-    setArmySelectorsEnabled(true);
+    attackerArmiesInput.value = 5;
+    defenderArmiesInput.value = 3;
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
 }
 
