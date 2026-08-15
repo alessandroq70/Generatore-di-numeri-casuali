@@ -6,6 +6,37 @@ const battleResult = document.getElementById('battleResult');
 
 let battle = null;
 
+// Selezione rapida delle armate tramite bottoni 1-10 e +1/-1
+function setupArmySelector(inputId) {
+    const input = document.getElementById(inputId);
+    const group = input.closest('.army-group');
+
+    group.querySelectorAll('.quick-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            input.value = btn.dataset.value;
+        });
+    });
+
+    group.querySelectorAll('.adjust-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const delta = parseInt(btn.dataset.delta, 10);
+            const min = parseInt(input.min, 10) || 1;
+            let current = parseInt(input.value, 10);
+            if (isNaN(current)) current = min;
+            input.value = Math.max(min, current + delta);
+        });
+    });
+}
+
+setupArmySelector('attackerArmies');
+setupArmySelector('defenderArmies');
+
+function setArmySelectorsEnabled(enabled) {
+    document.querySelectorAll('.quick-btn, .adjust-btn').forEach(btn => {
+        btn.disabled = !enabled;
+    });
+}
+
 // Lancia n dadi a 6 facce, ordinati dal più alto al più basso
 function rollDice(n) {
     const dice = [];
@@ -36,6 +67,7 @@ function initBattle() {
 
     attackerArmiesInput.disabled = true;
     defenderArmiesInput.disabled = true;
+    setArmySelectorsEnabled(false);
 
     return { attacker, defender, over: false };
 }
@@ -120,6 +152,7 @@ function resetBattle() {
     battle = null;
     attackerArmiesInput.disabled = false;
     defenderArmiesInput.disabled = false;
+    setArmySelectorsEnabled(true);
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
     updateBattleButton();
 }
