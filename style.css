@@ -315,11 +315,29 @@ input[type="checkbox"] {
     margin-bottom: 15px;
 }
 
+.army-stepper {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
 .army-display {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
     text-align: center;
     font-weight: 700;
-    font-size: 1.3em;
-    margin-bottom: 10px;
+    font-size: 1.2em;
+    padding: 10px;
+    -moz-appearance: textfield;
+}
+
+/* Nasconde le freccette native del campo numerico: ci sono i bottoni +1/-1 */
+.army-display::-webkit-inner-spin-button,
+.army-display::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .quick-select {
@@ -351,14 +369,9 @@ input[type="checkbox"] {
     transform: translateY(0);
 }
 
-.adjust-buttons {
-    display: flex;
-    gap: 10px;
-}
-
 .adjust-btn {
-    flex: 1;
-    padding: 10px;
+    flex: 0 0 52px;
+    padding: 10px 0;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     background: #f8f9fa;
