@@ -494,9 +494,24 @@ input[type="checkbox"] {
 }
 
 .battle-final-message {
-    margin-top: 10px;
+    margin-top: 15px;
+    padding: 15px 20px;
+    border-radius: 12px;
     font-weight: 700;
-    color: #16a085;
+    font-size: 1.15em;
+    text-align: center;
+    color: white;
+    animation: bounceIn 0.5s ease-out;
+}
+
+.battle-final-message.victory {
+    background: linear-gradient(135deg, #16a085 0%, #2ecc71 100%);
+    box-shadow: 0 4px 20px rgba(22, 160, 133, 0.45);
+}
+
+.battle-final-message.halt {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.45);
 }
 
 /* Link per tornare al menu */
