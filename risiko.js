@@ -1,8 +1,11 @@
 const attackerArmiesInput = document.getElementById('attackerArmies');
 const defenderArmiesInput = document.getElementById('defenderArmies');
 const rollBattleBtn = document.getElementById('rollBattleBtn');
+const autoBattleBtn = document.getElementById('autoBattleBtn');
 const resetBattleBtn = document.getElementById('resetBattleBtn');
 const battleResult = document.getElementById('battleResult');
+
+const AUTO_ROUND_DELAY_MS = 450;
 
 // Selezione rapida delle armate tramite bottoni 1-10 e +1/-1
 function setupArmySelector(inputId) {
@@ -38,26 +41,31 @@ function rollDice(n) {
     return dice.sort((a, b) => b - a);
 }
 
-function playBattleRound() {
+function readArmies() {
     const attacker = parseInt(attackerArmiesInput.value, 10);
     const defender = parseInt(defenderArmiesInput.value, 10);
 
     if (isNaN(attacker) || isNaN(defender)) {
         alert('Inserisci valori numerici validi!');
-        return;
+        return null;
     }
 
     if (attacker < 2) {
         alert("L'attaccante deve avere almeno 2 armate (ne serve sempre 1 di riserva)!");
-        return;
+        return null;
     }
 
     if (defender < 1) {
         alert('Il difensore deve avere almeno 1 armata!');
-        return;
+        return null;
     }
 
-    // Regole Risiko (variante casa): attaccante fino a 3 dadi (max armate-1), difensore fino a 3 dadi (max armate)
+    return { attacker, defender };
+}
+
+// Simula un singolo round di combattimento (regole Risiko, variante casa:
+// attaccante fino a 3 dadi, difensore fino a 3 dadi se ha almeno 3 armate)
+function simulateRound(attacker, defender) {
     const attackDiceCount = Math.min(3, attacker - 1);
     const defenseDiceCount = Math.min(3, defender);
 
@@ -77,25 +85,97 @@ function playBattleRound() {
         }
     }
 
-    const attackerRemaining = Math.max(attacker - attackerLosses, 0);
-    const defenderRemaining = Math.max(defender - defenderLosses, 0);
+    return {
+        attackDice,
+        defenseDice,
+        attackerLosses,
+        defenderLosses,
+        attackerRemaining: Math.max(attacker - attackerLosses, 0),
+        defenderRemaining: Math.max(defender - defenderLosses, 0)
+    };
+}
+
+// Determina se la battaglia deve fermarsi e con quale messaggio
+function getBattleOutcome(attackerRemaining, defenderRemaining) {
+    if (defenderRemaining <= 0) {
+        return { stop: true, finalMessage: '🏆 Il difensore è stato sconfitto! Territorio conquistato!', finalType: 'victory' };
+    }
+    if (attackerRemaining < 2) {
+        return { stop: true, finalMessage: "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!", finalType: 'halt' };
+    }
+    if (attackerRemaining === defenderRemaining) {
+        return { stop: true, finalMessage: '⚖️ Le armate sono in parità: battaglia fermata automaticamente.', finalType: 'parity' };
+    }
+    return { stop: false, finalMessage: null, finalType: null };
+}
+
+function setBattleControlsEnabled(enabled) {
+    rollBattleBtn.disabled = !enabled;
+    autoBattleBtn.disabled = !enabled;
+    resetBattleBtn.disabled = !enabled;
+    attackerArmiesInput.disabled = !enabled;
+    defenderArmiesInput.disabled = !enabled;
+    document.querySelectorAll('.quick-btn, .adjust-btn').forEach(btn => {
+        btn.disabled = !enabled;
+    });
+}
+
+function playBattleRound() {
+    const armies = readArmies();
+    if (!armies) return;
+
+    const round = simulateRound(armies.attacker, armies.defender);
 
     // Aggiorna subito i campi con le armate rimaste, cosi' restano modificabili
     // (es. il difensore puo' decidere di difendere con meno armate al round successivo)
-    attackerArmiesInput.value = attackerRemaining;
-    defenderArmiesInput.value = defenderRemaining;
+    attackerArmiesInput.value = round.attackerRemaining;
+    defenderArmiesInput.value = round.defenderRemaining;
 
+    // Il singolo tiro manuale si ferma solo per vittoria/mancanza di armate,
+    // non per la parita' (quella riguarda solo la modalita' Auto)
     let finalMessage = null;
     let finalType = null;
-    if (defenderRemaining <= 0) {
+    if (round.defenderRemaining <= 0) {
         finalMessage = '🏆 Il difensore è stato sconfitto! Territorio conquistato!';
         finalType = 'victory';
-    } else if (attackerRemaining < 2) {
+    } else if (round.attackerRemaining < 2) {
         finalMessage = "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!";
         finalType = 'halt';
     }
 
-    displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType);
+    displayBattleRound(round, finalMessage, finalType);
+}
+
+// Tira i dadi automaticamente fino alla conquista, alla mancanza di armate
+// dell'attaccante, oppure fino a quando le armate sono in parita'
+function autoBattle() {
+    const armies = readArmies();
+    if (!armies) return;
+
+    setBattleControlsEnabled(false);
+
+    let attacker = armies.attacker;
+    let defender = armies.defender;
+
+    function step() {
+        const round = simulateRound(attacker, defender);
+        attacker = round.attackerRemaining;
+        defender = round.defenderRemaining;
+
+        attackerArmiesInput.value = attacker;
+        defenderArmiesInput.value = defender;
+
+        const outcome = getBattleOutcome(attacker, defender);
+        displayBattleRound(round, outcome.finalMessage, outcome.finalType);
+
+        if (outcome.stop) {
+            setBattleControlsEnabled(true);
+        } else {
+            setTimeout(step, AUTO_ROUND_DELAY_MS);
+        }
+    }
+
+    step();
 }
 
 // Separa l'emoji iniziale dal testo per mostrarla piu' grande nel banner finale
@@ -110,7 +190,8 @@ function renderFinalBanner(message, type) {
     `;
 }
 
-function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType) {
+function displayBattleRound(round, finalMessage, finalType) {
+    const { attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining } = round;
     battleResult.innerHTML = `
         ${renderFinalBanner(finalMessage, finalType)}
         <div class="dice-row">
@@ -141,4 +222,5 @@ function resetBattle() {
 }
 
 rollBattleBtn.addEventListener('click', playBattleRound);
+autoBattleBtn.addEventListener('click', autoBattle);
 resetBattleBtn.addEventListener('click', resetBattle);
