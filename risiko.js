@@ -98,8 +98,21 @@ function playBattleRound() {
     displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType);
 }
 
+// Separa l'emoji iniziale dal testo per mostrarla piu' grande nel banner finale
+function renderFinalBanner(message, type) {
+    if (!message) return '';
+    const [icon, ...rest] = message.split(' ');
+    return `
+        <div class="battle-final-message ${type}">
+            <span class="final-icon">${icon}</span>
+            <span class="final-text">${rest.join(' ')}</span>
+        </div>
+    `;
+}
+
 function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLosses, attackerRemaining, defenderRemaining, finalMessage, finalType) {
     battleResult.innerHTML = `
+        ${renderFinalBanner(finalMessage, finalType)}
         <div class="dice-row">
             <div class="dice-group">
                 <strong>⚔️ Attaccante</strong>
@@ -118,7 +131,6 @@ function displayBattleRound(attackDice, defenseDice, attackerLosses, defenderLos
             <span>⚔️ Attaccante: <strong>${attackerRemaining}</strong></span>
             <span>🛡️ Difensore: <strong>${defenderRemaining}</strong></span>
         </div>
-        ${finalMessage ? `<p class="battle-final-message ${finalType}">${finalMessage}</p>` : ''}
     `;
 }
 

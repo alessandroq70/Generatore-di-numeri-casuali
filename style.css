@@ -507,24 +507,45 @@ input[type="checkbox"] {
 }
 
 .battle-final-message {
-    margin-top: 15px;
-    padding: 15px 20px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1.15em;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 14px;
     text-align: center;
     color: white;
     animation: bounceIn 0.5s ease-out;
 }
 
+.final-icon {
+    display: block;
+    font-size: 2.4em;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.final-text {
+    display: block;
+    font-weight: 700;
+    font-size: 1.15em;
+}
+
 .battle-final-message.victory {
     background: linear-gradient(135deg, #16a085 0%, #2ecc71 100%);
-    box-shadow: 0 4px 20px rgba(22, 160, 133, 0.45);
+    animation: bounceIn 0.5s ease-out, pulseGlowVictory 1.3s ease-in-out 0.5s 3;
 }
 
 .battle-final-message.halt {
     background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
-    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.45);
+    animation: bounceIn 0.5s ease-out, pulseGlowHalt 1.3s ease-in-out 0.5s 3;
+}
+
+@keyframes pulseGlowVictory {
+    0%, 100% { box-shadow: 0 4px 20px rgba(22, 160, 133, 0.45); transform: scale(1); }
+    50% { box-shadow: 0 4px 40px rgba(22, 160, 133, 0.9); transform: scale(1.03); }
+}
+
+@keyframes pulseGlowHalt {
+    0%, 100% { box-shadow: 0 4px 20px rgba(231, 76, 60, 0.45); transform: scale(1); }
+    50% { box-shadow: 0 4px 40px rgba(231, 76, 60, 0.9); transform: scale(1.03); }
 }
 
 /* Link per tornare al menu */
