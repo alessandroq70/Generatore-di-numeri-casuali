@@ -14,7 +14,11 @@
         <div class="risiko-settings">
             <div class="input-group army-group">
                 <label for="attackerArmies">Armate Attaccante:</label>
-                <input type="number" id="attackerArmies" value="5" min="2" class="army-display">
+                <div class="army-stepper">
+                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
+                    <input type="number" id="attackerArmies" value="5" min="2" class="army-display">
+                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
+                </div>
                 <div class="quick-select">
                     <button type="button" class="quick-btn" data-value="1">1</button>
                     <button type="button" class="quick-btn" data-value="2">2</button>
@@ -26,16 +30,16 @@
                     <button type="button" class="quick-btn" data-value="8">8</button>
                     <button type="button" class="quick-btn" data-value="9">9</button>
                     <button type="button" class="quick-btn" data-value="10">10</button>
-                </div>
-                <div class="adjust-buttons">
-                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
-                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
                 </div>
             </div>
 
             <div class="input-group army-group">
                 <label for="defenderArmies">Armate Difensore:</label>
-                <input type="number" id="defenderArmies" value="3" min="1" class="army-display">
+                <div class="army-stepper">
+                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
+                    <input type="number" id="defenderArmies" value="3" min="1" class="army-display">
+                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
+                </div>
                 <div class="quick-select">
                     <button type="button" class="quick-btn" data-value="1">1</button>
                     <button type="button" class="quick-btn" data-value="2">2</button>
@@ -47,10 +51,6 @@
                     <button type="button" class="quick-btn" data-value="8">8</button>
                     <button type="button" class="quick-btn" data-value="9">9</button>
                     <button type="button" class="quick-btn" data-value="10">10</button>
-                </div>
-                <div class="adjust-buttons">
-                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
-                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
                 </div>
             </div>
         </div>
