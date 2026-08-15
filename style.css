@@ -403,8 +403,14 @@ input[type="checkbox"] {
     cursor: not-allowed;
 }
 
+.battle-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
 .battle-btn {
-    width: 100%;
+    flex: 3;
     padding: 15px;
     background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
     color: white;
@@ -414,7 +420,6 @@ input[type="checkbox"] {
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-bottom: 15px;
 }
 
 .battle-btn:hover:not(:disabled) {
@@ -422,7 +427,26 @@ input[type="checkbox"] {
     box-shadow: 0 5px 20px rgba(231, 76, 60, 0.4);
 }
 
-.battle-btn:disabled {
+.auto-btn {
+    flex: 1;
+    padding: 15px 6px;
+    background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.auto-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(243, 156, 18, 0.4);
+}
+
+.battle-btn:disabled,
+.auto-btn:disabled {
     background: #bdc3c7;
     cursor: not-allowed;
     transform: none;
@@ -544,6 +568,11 @@ input[type="checkbox"] {
 .battle-final-message.halt {
     background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
     animation: bounceIn 0.5s ease-out, pulseGlowHalt 1.3s ease-in-out 0.5s 3;
+}
+
+.battle-final-message.parity {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    box-shadow: 0 4px 20px rgba(52, 73, 94, 0.45);
 }
 
 @keyframes pulseGlowVictory {
