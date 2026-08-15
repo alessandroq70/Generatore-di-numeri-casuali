@@ -279,9 +279,9 @@ function playBattleRound() {
         if (!battle) return;
     }
 
-    // Regole Risiko: attaccante fino a 3 dadi (max armate-1), difensore fino a 2 dadi (max armate)
+    // Regole Risiko (variante casa): attaccante fino a 3 dadi (max armate-1), difensore fino a 3 dadi (max armate)
     const attackDiceCount = Math.min(3, battle.attacker - 1);
-    const defenseDiceCount = Math.min(2, battle.defender);
+    const defenseDiceCount = Math.min(3, battle.defender);
 
     const attackDice = rollDice(attackDiceCount);
     const defenseDice = rollDice(defenseDiceCount);
