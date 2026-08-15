@@ -323,19 +323,27 @@ input[type="checkbox"] {
 
 .army-stepper {
     display: flex;
-    align-items: stretch;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 8px;
 }
 
-.army-display {
-    flex: 1;
-    width: 100%;
+.army-label {
+    flex: 0 1 auto;
     min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.85em;
+}
+
+.army-display {
+    flex: 1 1 56px;
+    min-width: 56px;
     text-align: center;
     font-weight: 700;
-    font-size: 1.2em;
-    padding: 10px;
+    font-size: 1.1em;
+    padding: 10px 6px;
     -moz-appearance: textfield;
 }
 
@@ -377,13 +385,13 @@ input[type="checkbox"] {
 }
 
 .adjust-btn {
-    flex: 0 0 52px;
+    flex: 0 0 40px;
     padding: 10px 0;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     background: #f8f9fa;
     font-weight: 700;
-    font-size: 1.1em;
+    font-size: 0.95em;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
 }
