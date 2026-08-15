@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battaglia Risiko</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Menu</a>
+        <h1>⚔️ Battaglia Risiko ⚔️</h1>
+
+        <div class="risiko-settings">
+            <div class="input-group army-group">
+                <label for="attackerArmies">Armate Attaccante:</label>
+                <input type="number" id="attackerArmies" value="5" min="2" class="army-display">
+                <div class="quick-select">
+                    <button type="button" class="quick-btn" data-value="1">1</button>
+                    <button type="button" class="quick-btn" data-value="2">2</button>
+                    <button type="button" class="quick-btn" data-value="3">3</button>
+                    <button type="button" class="quick-btn" data-value="4">4</button>
+                    <button type="button" class="quick-btn" data-value="5">5</button>
+                    <button type="button" class="quick-btn" data-value="6">6</button>
+                    <button type="button" class="quick-btn" data-value="7">7</button>
+                    <button type="button" class="quick-btn" data-value="8">8</button>
+                    <button type="button" class="quick-btn" data-value="9">9</button>
+                    <button type="button" class="quick-btn" data-value="10">10</button>
+                </div>
+                <div class="adjust-buttons">
+                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
+                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
+                </div>
+            </div>
+
+            <div class="input-group army-group">
+                <label for="defenderArmies">Armate Difensore:</label>
+                <input type="number" id="defenderArmies" value="3" min="1" class="army-display">
+                <div class="quick-select">
+                    <button type="button" class="quick-btn" data-value="1">1</button>
+                    <button type="button" class="quick-btn" data-value="2">2</button>
+                    <button type="button" class="quick-btn" data-value="3">3</button>
+                    <button type="button" class="quick-btn" data-value="4">4</button>
+                    <button type="button" class="quick-btn" data-value="5">5</button>
+                    <button type="button" class="quick-btn" data-value="6">6</button>
+                    <button type="button" class="quick-btn" data-value="7">7</button>
+                    <button type="button" class="quick-btn" data-value="8">8</button>
+                    <button type="button" class="quick-btn" data-value="9">9</button>
+                    <button type="button" class="quick-btn" data-value="10">10</button>
+                </div>
+                <div class="adjust-buttons">
+                    <button type="button" class="adjust-btn" data-delta="-1">−1</button>
+                    <button type="button" class="adjust-btn" data-delta="1">+1</button>
+                </div>
+            </div>
+        </div>
+
+        <button id="rollBattleBtn" class="battle-btn">🎲 Tira i Dadi</button>
+
+        <div class="battle-result" id="battleResult">
+            <p>Imposta le armate e inizia la battaglia</p>
+        </div>
+
+        <button id="resetBattleBtn" class="clear-btn">Nuova Battaglia</button>
+    </div>
+
+    <script src="risiko.js"></script>
+</body>
+</html>
