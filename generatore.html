@@ -6,25 +6,31 @@
     <title>Generatore Numeri Casuali</title>
     <link rel="stylesheet" href="style.css?v=2">
 </head>
-<body>
+<body class="align-top">
     <div class="container">
         <a href="index.html" class="back-link">← Menu</a>
         <h1>🎲 Generatore Numeri Casuali 🎲</h1>
 
         <div class="settings">
             <div class="input-group">
-                <label for="min">Numero Minimo:</label>
-                <input type="number" id="min" value="1">
+                <div class="field-row">
+                    <label for="min" class="field-label">Numero Minimo:</label>
+                    <input type="number" id="min" value="1" class="field-input">
+                </div>
             </div>
 
             <div class="input-group">
-                <label for="max">Numero Massimo:</label>
-                <input type="number" id="max" value="90">
+                <div class="field-row">
+                    <label for="max" class="field-label">Numero Massimo:</label>
+                    <input type="number" id="max" value="90" class="field-input">
+                </div>
             </div>
 
             <div class="input-group">
-                <label for="count">Quanti numeri:</label>
-                <input type="number" id="count" value="1" min="1">
+                <div class="field-row">
+                    <label for="count" class="field-label">Quanti numeri:</label>
+                    <input type="number" id="count" value="1" min="1" class="field-input">
+                </div>
             </div>
 
             <div class="input-group checkbox-group">

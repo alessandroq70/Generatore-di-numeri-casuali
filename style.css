@@ -39,8 +39,8 @@ h1 {
 .settings {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
 .input-group {
@@ -53,6 +53,25 @@ label {
     color: #555;
     font-weight: 600;
     font-size: 0.9em;
+}
+
+.field-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.field-label {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.field-input {
+    flex: 1 1 70px;
+    min-width: 70px;
 }
 
 input[type="number"] {
@@ -675,13 +694,20 @@ input[type="checkbox"] {
     }
 
     h1 {
-        font-size: 1.5em;
-        margin-bottom: 18px;
+        font-size: 1.35em;
+        line-height: 1.15;
+        margin-bottom: 14px;
     }
 
     .checkbox-label {
         font-size: 0.9em;
         padding: 10px;
+    }
+
+    .result {
+        margin: 15px 0;
+        padding: 20px;
+        min-height: 70px;
     }
 
     .number {
@@ -693,10 +719,6 @@ input[type="checkbox"] {
     .unique-badge {
         font-size: 0.85em;
         padding: 8px 16px;
-    }
-
-    .result {
-        padding: 20px;
     }
 
     .risiko-settings {
