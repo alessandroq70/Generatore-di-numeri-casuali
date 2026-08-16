@@ -7,6 +7,20 @@ const battleResult = document.getElementById('battleResult');
 
 const AUTO_ROUND_DELAY_MS = 450;
 
+// Mostra nel bottone Reset il rapporto attaccante:difensore attualmente impostato
+function updateRatioLabel() {
+    const attacker = parseInt(attackerArmiesInput.value, 10);
+    const defender = parseInt(defenderArmiesInput.value, 10);
+
+    if (isNaN(attacker) || isNaN(defender) || defender <= 0) {
+        resetBattleBtn.textContent = 'Reset';
+        return;
+    }
+
+    const ratio = (attacker / defender).toFixed(2);
+    resetBattleBtn.textContent = `Reset · 📊 Rapporto attuale: ${ratio}:1`;
+}
+
 // Selezione rapida delle armate tramite bottoni 1-10 e +1/-1
 function setupArmySelector(inputId) {
     const input = document.getElementById(inputId);
@@ -15,6 +29,7 @@ function setupArmySelector(inputId) {
     group.querySelectorAll('.quick-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             input.value = btn.dataset.value;
+            updateRatioLabel();
         });
     });
 
@@ -25,8 +40,11 @@ function setupArmySelector(inputId) {
             let current = parseInt(input.value, 10);
             if (isNaN(current)) current = min;
             input.value = Math.max(min, current + delta);
+            updateRatioLabel();
         });
     });
+
+    input.addEventListener('input', updateRatioLabel);
 }
 
 setupArmySelector('attackerArmies');
@@ -103,8 +121,8 @@ function getBattleOutcome(attackerRemaining, defenderRemaining) {
     if (attackerRemaining < 2) {
         return { stop: true, finalMessage: "🛡️ L'attaccante non ha più armate sufficienti per continuare l'attacco!", finalType: 'halt' };
     }
-    if (attackerRemaining === defenderRemaining) {
-        return { stop: true, finalMessage: '⚖️ Le armate sono in parità: battaglia fermata automaticamente.', finalType: 'parity' };
+    if (attackerRemaining <= defenderRemaining) {
+        return { stop: true, finalMessage: '⚖️ L\'attaccante non è più in vantaggio numerico: battaglia fermata automaticamente.', finalType: 'parity' };
     }
     return { stop: false, finalMessage: null, finalType: null };
 }
@@ -130,6 +148,7 @@ function playBattleRound() {
     // (es. il difensore puo' decidere di difendere con meno armate al round successivo)
     attackerArmiesInput.value = round.attackerRemaining;
     defenderArmiesInput.value = round.defenderRemaining;
+    updateRatioLabel();
 
     // Il singolo tiro manuale si ferma solo per vittoria/mancanza di armate,
     // non per la parita' (quella riguarda solo la modalita' Auto)
@@ -164,6 +183,7 @@ function autoBattle() {
 
         attackerArmiesInput.value = attacker;
         defenderArmiesInput.value = defender;
+        updateRatioLabel();
 
         const outcome = getBattleOutcome(attacker, defender);
         displayBattleRound(round, outcome.finalMessage, outcome.finalType);
@@ -219,8 +239,11 @@ function resetBattle() {
     attackerArmiesInput.value = 5;
     defenderArmiesInput.value = 3;
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
+    updateRatioLabel();
 }
 
 rollBattleBtn.addEventListener('click', playBattleRound);
 autoBattleBtn.addEventListener('click', autoBattle);
 resetBattleBtn.addEventListener('click', resetBattle);
+
+updateRatioLabel();
