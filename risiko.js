@@ -4,8 +4,46 @@ const rollBattleBtn = document.getElementById('rollBattleBtn');
 const autoBattleBtn = document.getElementById('autoBattleBtn');
 const resetBattleBtn = document.getElementById('resetBattleBtn');
 const battleResult = document.getElementById('battleResult');
+const logBtn = document.getElementById('logBtn');
+const battleLogPanel = document.getElementById('battleLogPanel');
+const battleLogList = document.getElementById('battleLogList');
 
 const AUTO_ROUND_DELAY_MS = 450;
+
+// Cronologia di tutti i round giocati nella battaglia corrente
+let battleLog = [];
+
+function logRound(round) {
+    battleLog.push(round);
+    renderBattleLog();
+}
+
+function renderBattleLog() {
+    if (battleLog.length === 0) {
+        battleLogList.innerHTML = '<p class="log-entry-empty">Nessun round giocato ancora</p>';
+        return;
+    }
+
+    battleLogList.innerHTML = battleLog.map((round, index) => `
+        <div class="log-entry">
+            Round ${index + 1}: ⚔️ [${round.attackDice.join(', ')}] vs 🛡️ [${round.defenseDice.join(', ')}]
+            → Attacc. −${round.attackerLosses} / Dif. −${round.defenderLosses}
+            (rimaste ${round.attackerRemaining}/${round.defenderRemaining})
+        </div>
+    `).join('');
+}
+
+function clearBattleLog() {
+    battleLog = [];
+    battleLogPanel.hidden = true;
+    renderBattleLog();
+}
+
+logBtn.addEventListener('click', () => {
+    battleLogPanel.hidden = !battleLogPanel.hidden;
+});
+
+renderBattleLog();
 
 // Ultimi valori inseriti manualmente dall'utente (non dai round di battaglia),
 // usati da "Reset" per ripristinare la situazione di partenza voluta
@@ -160,6 +198,7 @@ function playBattleRound() {
     if (!armies) return;
 
     const round = simulateRound(armies.attacker, armies.defender);
+    logRound(round);
 
     // Aggiorna subito i campi con le armate rimaste, cosi' restano modificabili
     // (es. il difensore puo' decidere di difendere con meno armate al round successivo)
@@ -195,6 +234,7 @@ function autoBattle() {
 
     function step() {
         const round = simulateRound(attacker, defender);
+        logRound(round);
         attacker = round.attackerRemaining;
         defender = round.defenderRemaining;
 
@@ -257,6 +297,7 @@ function resetBattle() {
     defenderArmiesInput.value = lastManualDefender;
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
     updateRatioLabel();
+    clearBattleLog();
 }
 
 rollBattleBtn.addEventListener('click', playBattleRound);

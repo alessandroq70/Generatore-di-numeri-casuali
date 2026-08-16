@@ -64,7 +64,15 @@
             <p>Imposta le armate e inizia la battaglia</p>
         </div>
 
-        <button id="resetBattleBtn" class="clear-btn">Reset</button>
+        <div class="secondary-actions">
+            <button id="resetBattleBtn" class="clear-btn">Reset</button>
+            <button id="logBtn" type="button" class="log-btn">📜 Log</button>
+        </div>
+
+        <div class="battle-log-panel" id="battleLogPanel" hidden>
+            <h4>📜 Cronologia dei round</h4>
+            <div id="battleLogList" class="battle-log-list"></div>
+        </div>
     </div>
 
     <script src="risiko.js?v=2"></script>
