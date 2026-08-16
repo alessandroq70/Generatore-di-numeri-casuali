@@ -21,16 +21,25 @@ function logRound(round) {
 function renderBattleLog() {
     if (battleLog.length === 0) {
         battleLogList.innerHTML = '<p class="log-entry-empty">Nessun round giocato ancora</p>';
-        return;
+    } else {
+        battleLogList.innerHTML = battleLog.map((round, index) => `
+            <div class="log-entry">
+                Round ${index + 1}: ⚔️ [${round.attackDice.join(', ')}] vs 🛡️ [${round.defenseDice.join(', ')}]
+                → Attacc. −${round.attackerLosses} / Dif. −${round.defenderLosses}
+                (rimaste ${round.attackerRemaining}/${round.defenderRemaining})
+            </div>
+        `).join('');
     }
 
-    battleLogList.innerHTML = battleLog.map((round, index) => `
-        <div class="log-entry">
-            Round ${index + 1}: ⚔️ [${round.attackDice.join(', ')}] vs 🛡️ [${round.defenseDice.join(', ')}]
-            → Attacc. −${round.attackerLosses} / Dif. −${round.defenderLosses}
-            (rimaste ${round.attackerRemaining}/${round.defenderRemaining})
-        </div>
-    `).join('');
+    scrollLogToLatest();
+}
+
+// Se il pannello e' visibile, scorre automaticamente all'ultima giocata
+// (utile mentre "Auto" sta ancora giocando round su round)
+function scrollLogToLatest() {
+    if (!battleLogPanel.hidden) {
+        battleLogPanel.scrollTop = battleLogPanel.scrollHeight;
+    }
 }
 
 function clearBattleLog() {
@@ -41,6 +50,7 @@ function clearBattleLog() {
 
 logBtn.addEventListener('click', () => {
     battleLogPanel.hidden = !battleLogPanel.hidden;
+    scrollLogToLatest();
 });
 
 renderBattleLog();
