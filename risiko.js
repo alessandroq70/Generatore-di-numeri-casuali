@@ -17,7 +17,7 @@ function updateRatioLabel() {
         return;
     }
 
-    const ratio = (attacker / defender).toFixed(2);
+    const ratio = (attacker / defender).toFixed(1);
     resetBattleBtn.textContent = `Reset · 📊 Rapporto attuale: ${ratio}:1`;
 }
 
