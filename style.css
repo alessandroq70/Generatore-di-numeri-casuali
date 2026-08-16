@@ -332,6 +332,76 @@ input[type="checkbox"] {
     transform: translateY(0);
 }
 
+/* Reset + Log affiancati nella Battaglia Risiko */
+.secondary-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.secondary-actions .clear-btn {
+    width: auto;
+    flex: 3;
+}
+
+.log-btn {
+    flex: 1;
+    padding: 12px 6px;
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.log-btn:hover {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    transform: translateY(-1px);
+}
+
+.log-btn:active {
+    transform: translateY(0);
+}
+
+.battle-log-panel {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.battle-log-panel h4 {
+    color: #333;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.battle-log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.log-entry {
+    padding: 8px 10px;
+    background: white;
+    border-radius: 8px;
+    font-size: 0.8em;
+    color: #444;
+    border-left: 3px solid #667eea;
+}
+
+.log-entry-empty {
+    text-align: center;
+    color: #999;
+    padding: 10px;
+    font-size: 0.85em;
+}
+
 /* Sezione Battaglia Risiko */
 .risiko-settings {
     display: flex;
