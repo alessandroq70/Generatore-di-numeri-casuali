@@ -7,6 +7,18 @@ const battleResult = document.getElementById('battleResult');
 
 const AUTO_ROUND_DELAY_MS = 450;
 
+// Ultimi valori inseriti manualmente dall'utente (non dai round di battaglia),
+// usati da "Reset" per ripristinare la situazione di partenza voluta
+let lastManualAttacker = parseInt(attackerArmiesInput.value, 10) || 5;
+let lastManualDefender = parseInt(defenderArmiesInput.value, 10) || 3;
+
+function captureManualInput() {
+    const attacker = parseInt(attackerArmiesInput.value, 10);
+    const defender = parseInt(defenderArmiesInput.value, 10);
+    if (!isNaN(attacker)) lastManualAttacker = attacker;
+    if (!isNaN(defender)) lastManualDefender = defender;
+}
+
 // Mostra nel bottone Reset il rapporto attaccante:difensore attualmente impostato
 function updateRatioLabel() {
     const attacker = parseInt(attackerArmiesInput.value, 10);
@@ -29,6 +41,7 @@ function setupArmySelector(inputId) {
     group.querySelectorAll('.quick-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             input.value = btn.dataset.value;
+            captureManualInput();
             updateRatioLabel();
         });
     });
@@ -40,11 +53,15 @@ function setupArmySelector(inputId) {
             let current = parseInt(input.value, 10);
             if (isNaN(current)) current = min;
             input.value = Math.max(min, current + delta);
+            captureManualInput();
             updateRatioLabel();
         });
     });
 
-    input.addEventListener('input', updateRatioLabel);
+    input.addEventListener('input', () => {
+        captureManualInput();
+        updateRatioLabel();
+    });
 }
 
 setupArmySelector('attackerArmies');
@@ -236,8 +253,8 @@ function displayBattleRound(round, finalMessage, finalType) {
 }
 
 function resetBattle() {
-    attackerArmiesInput.value = 5;
-    defenderArmiesInput.value = 3;
+    attackerArmiesInput.value = lastManualAttacker;
+    defenderArmiesInput.value = lastManualDefender;
     battleResult.innerHTML = '<p>Imposta le armate e inizia la battaglia</p>';
     updateRatioLabel();
 }
